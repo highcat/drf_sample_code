@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="p-streams-subscriptions">
+    {% if user.is_authenticated() %}
+      <h3>Hi {{ user.username }}</h3>
+    {% else %}
+      <h3>Hi {{ ac_obj.email }}</h3>
+    {% endif %}      
+    <h1>Manage subscriptions</h1>
+
+    {% if updated %}
+      <div class="alert alert-success">Your subscriptions successfully updated.</div>
+    {% endif %}    
+    
+    <form method="post" action=".">
+      {% csrf_token %}
+      <input type="hidden" name="code" value="{{ code }}">
+      <table>
+        <tr>
+          <td colspan="2">
+            <label>
+              <input type="checkbox" name="weekly-digest" {% if digest_sub %}checked{% endif %}>
+              Weekly digest subscription
+            </label>
+          </td>
+        </tr>
+
+        {% for s in subscriptions %}      
+          <tr>
+            <th><a target="_blank" href="/streams/~{{ s.stream.name }}/">~{{ s.stream.name }}</a></th>
+            <td>
+              <label><input type="radio" name="subs-type-{{ s.id }}" value="daily" {% if s.frequency == "daily" %}checked{% endif %}> receive daily</label>
+              <label><input type="radio" name="subs-type-{{ s.id }}" value="weekly" {% if s.frequency == "weekly" %}checked{% endif %}> receive weekly</label>
+              <label><input type="radio" name="subs-type-{{ s.id }}" value="mon-thu-sat" {% if s.frequency == "mon-thu-sat" %}checked{% endif %}> Monday, Thursday, Saturday</label>
+              <label><input type="radio" name="subs-type-{{ s.id }}" value="unsubscribe"> unsubscribe</label>    
+            </td>
+          </tr>
+        {% endfor %}      
+      </table>
+      <input class="btn btn-primary" type="submit" name="submit" value="Update Settings" />
+    </form>
+  </div>
+{% endblock %}

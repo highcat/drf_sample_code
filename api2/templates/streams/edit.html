@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="p-streams-edit" class="container">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        {% if editable %}
+          <div class="stream-edit-form">    
+            {% if stream %}
+              <h1>Edit <a href="/~{{ stream.name }}">~{{ stream.name }}</a></h1>
+            {% else %}
+              <h1>Create a stream</h1>
+            {% endif %}
+            
+            <div class="form-group">      
+              ~<input name="name" class="form-control" placeholder="Stream name" value="{{ stream.name }}" />
+            </div>        
+
+            <input type="hidden" name="id" value="{{ stream.id if stream else ''}}">
+
+            <div class="form-group">
+              <label>Explanation:
+                <textarea name="explanation" class="form-control" placeholder="Please enter explanation">{{ stream.explanation }}</textarea>
+              </label>
+            </div>
+
+            <div class="form-group fg-topics">
+              <label class="tags-label">
+                Topics:
+                <input type="text" name="topics-input" class="hide" value="{{ '' if not stream else ', '.join(stream.topics.order_by('name').values_list('name', flat=True)) }}"  />
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>URL:
+                <input type="text" name="url" class="form-control" placeholder="Please enter URL" value="{{ stream.url }}" />
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <label>Image:
+                <br>
+                {% if stream.image %}
+                  <img src="{{ stream.image|media }}" style="max-width: 30px; max-height: 30px; display: inline-block; margin-right: 20px;" />
+                {% endif %}
+                <input type="file" name="image" style="display: inline-block" />
+              </label>
+            </div>
+            
+            <hr style="border-color: #999;" />
+            
+            <div class="form-group">
+              <label>
+                Detect by:
+                <select name="detect-by" class="form-control">
+                  <option value="keywords" {%if stream.detect_by=='keywords'%}selected{%endif%}>keywords</option>
+                  <option value="people" {%if stream.detect_by=='people'%}selected{%endif%}>person</option>
+                  <option value="companies" {%if stream.detect_by=='companies'%}selected{%endif%}>company</option>
+                  <option value="products" {%if stream.detect_by=='products'%}selected{%endif%}>product</option>
+                  <option value="regions" {%if stream.detect_by=='regions'%}selected{%endif%}>region</option>
+                  <option value="movies" {%if stream.detect_by=='movies'%}selected{%endif%}>movie or TV show</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-group fg-select fg-people">
+              <label class="tags-label">
+                Person:
+                <input type="text" name="people-input" class="hide" value="{{ '' if not stream else ', '.join(stream.people.order_by('name').values_list('name', flat=True)) }}"  />
+              </label>
+            </div>
+            <div class="form-group fg-select fg-companies">
+              <label class="tags-label">
+                Company:
+                <input type="text" name="companies-input" class="hide" value="{{ '' if not stream else ', '.join(stream.companies.order_by('name').values_list('name', flat=True)) }}"  />
+              </label>
+            </div>
+            <div class="form-group fg-select fg-products">
+              <label class="tags-label">
+                Product:
+                <input type="text" name="products-input" class="hide" value="{{ '' if not stream else ', '.join(stream.products.order_by('name').values_list('name', flat=True)) }}"  />
+              </label>
+            </div>
+            <div class="form-group fg-select fg-regions">
+              <label class="tags-label">
+                Region:
+                <input type="text" name="regions-input" class="hide" value="{{ '' if not stream else ', '.join(stream.regions.order_by('name').values_list('name', flat=True)) }}"  />
+              </label>
+            </div>
+            <div class="form-group fg-select fg-movies">
+              <label class="tags-label">
+                Movie or TV show:
+                <input type="text" name="movies-input" class="hide" value="{{ '' if not stream else ', '.join(stream.movies.order_by('name').values_list('name', flat=True)) }}"  />
+              </label>
+            </div>
+
+
+            <div class="form-group fg-keywords">
+              <label class="tags-label">
+                Keywords:
+                <textarea name="keywords" class="form-control" placeholder="Please enter comma-separated list of keywords">{{ stream.keywords }}</textarea>
+              </label>
+            </div>        
+
+
+            <div class="form-group fg-search-body-to" style="text-align: left;">
+              <label>
+                <input type="checkbox" name="search-body-too" {% if stream and stream.search_body_too %}checked{% endif %} /> search body too
+              </label>
+            </div>
+            
+            {% if user.is_superuser %}
+              <div class="form-group">
+                <label><input name="no_creator" type="checkbox" {% if not stream or not stream.creator %}checked{% endif %}> stream creator is Streamer.ai (admins only feature)</label>
+              </div>        
+            {% endif %}      
+            <button class="btn btn-primary btn-submit">Submit</button>
+          </div>
+        {% else %}
+          {% if stream %}
+            <h1>~{{ stream.name }}</h1>
+            <p>{{ stream.explanation }}</p>
+          {% else %}
+            <p class="alert alert-warning">Please <a href="/account/login/?next=/streams/edit/">sign in</a> or <a href="/account/register/?next=/streams/edit/">sign up</a> to create a stream.</p>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>  
+  </div>
+{% endblock %}
