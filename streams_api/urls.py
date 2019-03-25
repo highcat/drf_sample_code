@@ -7,7 +7,6 @@ router = routers.SimpleRouter(trailing_slash=True)
 routerSlashless = routers.SimpleRouter(trailing_slash=False)
 
 router.register(r'streams', StreamsViewSet)
-
 # slashless for simple routers
 routerSlashless.registry = router.registry[:]
 

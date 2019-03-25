@@ -8,7 +8,6 @@ djcelery.setup_loader()
 
 DJANGO_ROOT = os.path.dirname(os.path.abspath(__file__)) + '/'
 
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 USE_SENTRY = False
@@ -157,11 +156,9 @@ HIJACK_LOGOUT_REDIRECT_URL = "/admin/auth/user/"
 SHOW_HIJACKUSER_IN_ADMIN = True
 HIJACK_ALLOW_GET_REQUESTS = True # XXX disallow, change to POST
 
-
 TEMPLATE_DIRS = (
     DJANGO_ROOT + 'templates/',
 )
-
 
 # XXX currently not testing things with database.
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -189,7 +186,6 @@ REST_FRAMEWORK = {
     'PAGINATE_BY_PARAM': 'pageSize', # Allow client to override, using `?pageSize=xxx`.
     'MAX_PAGINATE_BY': 100, # Maximum limit allowed when using `?pageSize=xxx`.
 }
-
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -304,14 +300,12 @@ SOCIAL_AUTH_PIPELINE = (
     'streamer.main.social_auth.send_validation_email',
 )
 
-
 # This workaround is for dustjs filter only.
 # Described here: http://stackoverflow.com/questions/19757137/dustjs-webassets-results-to-empty-compiled-file
 # Check the bug: https://github.com/miracle2k/webassets/issues/276
 ASSETS_CACHE = False
 ASSETS_MANIFEST = "file:gen/dusty.manifest"
 ASSETS_MODULES = ['streamer.assets']
-
 
 # This is only for site preferences
 SITE_ID = 1
@@ -334,13 +328,11 @@ EMAIL_MAILGUN_ACCOUNT = emailer.Account(
     password='***',
 )
 
-
 TWITTER_CONSUMER_KEY = "YOUR_CONSUMER_KEY"
 TWITTER_CONSUMER_SECRET = "YOUR CONSUMER_SECRET"
 
 TWITTER_OAUTH_TOKEN = "***"
 TWITTER_OAUTH_TOKEN_SECRET = "***"
-
 
 SIGN_UP_START_URL = '/account/profile/?need-complete=1'
 
@@ -364,7 +356,6 @@ SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/'
 # Inactive users can be redirected to this URL when trying to authenticate.
 SOCIAL_AUTH_INACTIVE_USER_URL = '/account/login/?error=inactive-user'
 
-
 ##### Always request email, this need to be set by hand #####
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 # Add email to requested authorizations.
@@ -378,7 +369,6 @@ SOCIAL_AUTH_LINKEDIN_EXTRA_DATA = [
     ('lastName', 'last_name'),
     ('emailAddress', 'email_address'),
 ]
-
 
 # Celery settings.
 # See http://docs.celeryproject.org/en/2.5/getting-started/brokers/redis.html#broker-redis
@@ -399,7 +389,6 @@ REDIS_DB = 0
 
 APNS_CERTIFICATE_PASSWORD = '***'
 
-
 from localsettings import *
 
 ASSETS_DEBUG = DEBUG
@@ -419,7 +408,6 @@ if len(sys.argv) > 1:
     if sys.argv[1] == 'migrate-tests':
         # Do what django tests do, to get in the same environment
         DATABASES['default']['NAME'] = 'test_' + DATABASES['default']['NAME']
-
 
 LOGGING = {
     'version': 1,
@@ -519,7 +507,6 @@ if DEBUG:
     LOGGING['loggers']['misc_scripts']['handlers'].append('console')
     LOGGING['loggers']['apns']['handlers'].append('console')
 
-
 if USE_SENTRY:
     # Errors from Django
     INSTALLED_APPS += (
@@ -544,7 +531,6 @@ if USE_SENTRY:
         'dsn': SENTRY_DSN_IMPORTS,
     }
     LOGGING['loggers']['import']['handlers'].append('import')
-
 
 BOWER_COMPONENTS_ROOT = DJANGO_ROOT + '../'
 

@@ -44,7 +44,6 @@ class StreamAdmin(admin.ModelAdmin):
     def has_url(self, obj):
         return mark_safe('<img src="/s/admin/img/icon-yes.gif" alt="True">' if obj.url else '<img src="/s/admin/img/icon-no.gif" alt="False">')
     
-
 admin.site.register(Stream, StreamAdmin)
 
 

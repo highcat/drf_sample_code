@@ -21,6 +21,7 @@ class StreamSerializer(serializers.ModelSerializer):
         if hasattr(obj, 'last24h_news_number'):
             return obj.last24h_news_number
         return None
+    
     # field done by annotation
     last24h_news_number_by_body = serializers.SerializerMethodField()
     def get_last24h_news_number_by_body(self, obj):

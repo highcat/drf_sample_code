@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db.models import Q
 from rest_framework import filters
-
 from .utils import annotate__last24h_news_number
+
 
 class StreamsFilter(filters.BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
@@ -60,7 +60,6 @@ class StreamsFilter(filters.BaseFilterBackend):
             qs = qs.extra(
                 select={'current_user_subscribed': USER_ANNOTATION_SQL.format(session_key=request.session.session_key or '')},
             )
-
             
         qs = qs.order_by('-last24h_news_number')
         # news_type = request.QUERY_PARAMS.get('newsType', '')

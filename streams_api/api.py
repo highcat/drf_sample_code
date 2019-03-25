@@ -16,14 +16,9 @@ from django.db.models import Q, F
 from django.db import connection
 from django.http import Http404
 from django.core.files.base import ContentFile
-from rest_framework import mixins
-from rest_framework import filters
-from rest_framework import viewsets
-from rest_framework import serializers
-from rest_framework import permissions
+from rest_framework import mixins, filters, viewsets, serializers, permissions
 from rest_framework.response import Response
-from rest_framework.decorators import detail_route, list_route
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import detail_route, list_route, api_view, permission_classes
 from rest_framework import status
 from celery.task.control import revoke
 

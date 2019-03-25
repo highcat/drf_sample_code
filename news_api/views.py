@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import dateutil.parser
-
 import re
 import json
 import pytz
@@ -9,15 +7,12 @@ from pprint import pprint
 from django.db import transaction
 from django.utils import timezone
 from datetime import datetime
+import dateutil.parser
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, F
 from django.db import connection
-from rest_framework import mixins
-from rest_framework import filters
-from rest_framework import viewsets
-from rest_framework import serializers
-from rest_framework import permissions
+from rest_framework import mixins, filters, viewsets, serializers, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.decorators import api_view, permission_classes
@@ -40,13 +35,11 @@ from streamer.main.models import (
     Tag,
 )
 from streamer.main.templatetags.tweet_helpers import _news_source_display_name, _news_stat_source_display_name
-from streamer.main import twitter
-from streamer.main import tasks
-from streamer.main import twitter_news_import, rss_news_import
-from streamer.main import find_title, summarization, find_orig_source
+from streamer.main import twitter, tasks, twitter_news_import, rss_news_import, find_title, summarization, find_orig_source
 from streams.serializers import StreamSerializer
 from streamer.utils.url import url_add_ref
-from streamer.main.models import UserProfile
+from streamer.main.models import UserProfile, SimilarNewsGroupKnowledgeCandidates
+
 
 def all_except(all_fields, read_write):
     out = list(set(all_fields) - set(read_write))
@@ -254,9 +247,7 @@ class NewsViewSet(mixins.ListModelMixin,
     # Note that permissions for listing also determined in filters.NewsFilter class,
     permission_classes = [permissions.AllowAny, NewsPermission]
 
-
     #### Admin actions
-
     def perform_create(self, serializer):
         """
         POST /news/  - create custom news by admin
@@ -406,7 +397,6 @@ class KnowledgeItemCandidateSerializer(serializers.ModelSerializer):
     def get_is_knowledge_item(self, obj):
         return True
 
-from streamer.main.models import SimilarNewsGroupKnowledgeCandidates
 
 class SimilarNewsGroupSerializer(serializers.ModelSerializer):
     news = NewsSerializer(read_only=True)

@@ -150,7 +150,6 @@ def merge_subscriptions(user):
         s.save()
 
 
-
 class AccessCode(models.Model):
     user = models.OneToOneField(User, null=True)
     email = models.EmailField(null=True)

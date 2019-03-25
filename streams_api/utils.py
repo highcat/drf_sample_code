@@ -5,6 +5,8 @@ from django.core.cache import caches
 from django.utils import timezone
 from datetime import timedelta
 from streamer.main.models import News
+from .models import Stream
+
 
 def annotate__news_with_stream_rank(qs, stream):
     """FIXME not readable structure, need to rename/refactor """
@@ -73,9 +75,6 @@ def annotate__last24h_news_number(qs):
     )
     return qs
 
-
-
-from .models import Stream
 
 def get_trending_streams():
     cache = caches['default']

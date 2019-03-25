@@ -8,7 +8,6 @@ from rest_framework import filters
 from rest_framework import permissions
 from streamer.api import exceptions
 from streamer.utils.utils import has_group
-
 from streamer.main.constants import QUALITY_CHOICES
 from streamer.main import digest
 from streams.models import Stream
@@ -76,7 +75,6 @@ class NewsFilter(filters.BaseFilterBackend):
             qs = qs.filter(is_duplicate=False)
             order = 'skip'
 
-
         if news_type == 'digest':
             # permissions
             qs = qs.filter(deleted=False)
@@ -100,7 +98,6 @@ class NewsFilter(filters.BaseFilterBackend):
             )
             order = 'asc'
 
-
         if news_type == 'trends':
             # permissions
             qs = qs.filter(
@@ -118,7 +115,6 @@ class NewsFilter(filters.BaseFilterBackend):
                 qs = qs.filter(ttrend_tag=trending_tag)
             order = 'desc'
 
-
         if news_type == 'personalized':
             # permissions
             if not user.is_authenticated():
@@ -126,7 +122,6 @@ class NewsFilter(filters.BaseFilterBackend):
             raise exceptions.HttpNotImplemented()
             # filtering
             order = 'desc'
-
 
         if news_type == 'fav':
             # permissions
@@ -137,7 +132,6 @@ class NewsFilter(filters.BaseFilterBackend):
             qs = qs.filter(deleted=False)
             qs = qs.filter( ~Q(quality='PROCESSING') )
             order = 'desc'
-
 
         #### Search
         search_type = request.QUERY_PARAMS.get('searchType', '')

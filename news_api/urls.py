@@ -11,9 +11,9 @@ routerSlashless = routers.SimpleRouter(trailing_slash=False)
 
 router.register(r'news', NewsViewSet)
 router.register(r'similarity/groups', SimilarNewsGroupViewSet)
-
 # slashless for simple routers
 routerSlashless.registry = router.registry[:]
+
 
 urlpatterns = patterns(
     '',
